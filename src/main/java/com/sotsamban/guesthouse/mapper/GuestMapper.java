@@ -20,7 +20,6 @@ public class GuestMapper {
         guest.setCity(request.getCity());
         guest.setState(request.getState());
         guest.setCountry(request.getCountry());
-        guest.setPostalCode(request.getPostalCode());
         guest.setDateOfBirth(request.getDateOfBirth());
 
         if (request.getIdDocumentType() != null) {
@@ -45,7 +44,6 @@ public class GuestMapper {
         response.setCity(guest.getCity());
         response.setState(guest.getState());
         response.setCountry(guest.getCountry());
-        response.setPostalCode(guest.getPostalCode());
         response.setDateOfBirth(guest.getDateOfBirth());
         response.setIdDocumentType(guest.getIdDocumentType() != null ? guest.getIdDocumentType().name() : null);
         response.setIdDocumentNumber(guest.getIdDocumentNumber());

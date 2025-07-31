@@ -42,10 +42,10 @@ public class GuestResponse {
     private String idDocumentNumber;
 
     @JsonProperty("created_at")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyyMMdd HH:mm:ss")
     private LocalDateTime createdAt;
 
     @JsonProperty("updated_at")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyyMMdd HH:mm:ss")
     private LocalDateTime updatedAt;
 }

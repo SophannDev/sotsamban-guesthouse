@@ -64,10 +64,6 @@ public class Guest {
     @Column(name = "country")
     private String country;
 
-    @Size(max = 20)
-    @Column(name = "postal_code")
-    private String postalCode;
-
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
