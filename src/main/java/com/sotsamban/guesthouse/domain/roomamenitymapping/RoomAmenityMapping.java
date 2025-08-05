@@ -1,5 +1,6 @@
 package com.sotsamban.guesthouse.domain.roomamenitymapping;
 
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.room.Room;
 import com.sotsamban.guesthouse.domain.roomamenity.RoomAmenity;
 import jakarta.persistence.*;
@@ -18,10 +19,10 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoomAmenityMapping {
+public class RoomAmenityMapping extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mapping_id")
+    @Column(name = "map_id")
     private Integer mappingId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,15 +30,11 @@ public class RoomAmenityMapping {
     private Room room;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "amenity_id", nullable = false)
+    @JoinColumn(name = "amt_id", nullable = false)
     private RoomAmenity amenity;
 
     @Min(1)
-    @Column(name = "quantity")
+    @Column(name = "qty")
     private Integer quantity = 1;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 }
 

@@ -1,5 +1,6 @@
 package com.sotsamban.guesthouse.domain.payment;
 
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.reservation.Reservation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -19,45 +20,37 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Payment {
+public class Payment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "payment_id")
+    @Column(name = "pay_id")
     private Integer paymentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id", nullable = false)
+    @JoinColumn(name = "rsv_id", nullable = false)
     private Reservation reservation;
 
     @DecimalMin(value = "0.01")
-    @Column(name = "amount", nullable = false)
+    @Column(name = "amt", nullable = false)
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method", nullable = false)
+    @Column(name = "pay_mthd", nullable = false)
     private PaymentMethod paymentMethod;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status")
+    @Column(name = "pay_sts")
     private PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
-    @Column(name = "payment_date")
+    @Column(name = "pay_dt")
     private LocalDateTime paymentDate = LocalDateTime.now();
 
     @Size(max = 100)
-    @Column(name = "transaction_id")
+    @Column(name = "txn_id")
     private String transactionId;
 
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     public enum PaymentMethod {
         CASH, CREDIT_CARD, DEBIT_CARD, BANK_TRANSFER, DIGITAL_WALLET, CHECK

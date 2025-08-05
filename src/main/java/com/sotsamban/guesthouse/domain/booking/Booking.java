@@ -1,8 +1,10 @@
 package com.sotsamban.guesthouse.domain.booking;
 
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.feedback.Feedback;
 import com.sotsamban.guesthouse.domain.guestservice.GuestService;
 import com.sotsamban.guesthouse.domain.reservation.Reservation;
+import com.sotsamban.guesthouse.enums.BookingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.AllArgsConstructor;
@@ -22,48 +24,35 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Booking {
+public class Booking extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id")
+    @Column(name = "bkg_id")
     private Integer bookingId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id", nullable = false, unique = true)
+    @JoinColumn(name = "rsv_id", nullable = false, unique = true)
     private Reservation reservation;
 
-    @Column(name = "actual_check_in")
+    @Column(name = "act_chk_in")
     private LocalDateTime actualCheckIn;
 
-    @Column(name = "actual_check_out")
+    @Column(name = "act_chk_out")
     private LocalDateTime actualCheckOut;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "booking_status")
+    @Convert(converter = BookingStatus.Converter.class)
+    @Column(name = "bkg_sts")
     private BookingStatus bookingStatus = BookingStatus.ACTIVE;
 
-    @DecimalMin(value = "0.0")
-    @Column(name = "total_amount", nullable = false)
+    @Column(name = "tot_amt", nullable = false)
     private BigDecimal totalAmount = BigDecimal.ZERO;
 
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<GuestService> guestServices;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Feedback> feedbacks;
-
-    public enum BookingStatus {
-        ACTIVE, COMPLETED, CANCELLED
-    }
 }

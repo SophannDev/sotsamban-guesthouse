@@ -1,5 +1,6 @@
 package com.sotsamban.guesthouse.domain.expense;
 
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.staff.Staff;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -21,25 +22,25 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Expense {
+public class Expense extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "expense_id")
+    @Column(name = "exp_id")
     private Integer expenseId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "expense_category", nullable = false)
+    @Column(name = "exp_cat", nullable = false)
     private ExpenseCategory expenseCategory;
 
-    @NotBlank
-    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+
+    @Column(name = "descr", nullable = false, columnDefinition = "TEXT")  // Changed: desc → descr
     private String description;
 
     @DecimalMin(value = "0.01")
-    @Column(name = "amount", nullable = false)
+    @Column(name = "amt", nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "expense_date")
+    @Column(name = "exp_dt")
     private LocalDateTime expenseDate = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,20 +48,12 @@ public class Expense {
     private Staff staff;
 
     @Size(max = 50)
-    @Column(name = "receipt_number")
+    @Column(name = "rec_num")
     private String receiptNumber;
 
     @Size(max = 100)
     @Column(name = "vendor")
     private String vendor;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     public enum ExpenseCategory {
         UTILITIES, MAINTENANCE, SUPPLIES, MARKETING, STAFF, FOOD_BEVERAGE, INSURANCE, TAXES, OTHER

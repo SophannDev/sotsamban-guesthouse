@@ -1,4 +1,5 @@
 package com.sotsamban.guesthouse.domain.roommaintence;
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.room.Room;
 import com.sotsamban.guesthouse.domain.staff.Staff;
 import jakarta.persistence.*;
@@ -20,10 +21,10 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoomMaintenance {
+public class RoomMaintenance extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "maintenance_id")
+    @Column(name = "mnt_id")
     private Integer maintenanceId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,38 +36,28 @@ public class RoomMaintenance {
     private Staff staff;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "maintenance_type", nullable = false)
+    @Column(name = "mnt_type", nullable = false)
     private MaintenanceType maintenanceType;
 
-    @NotBlank
-    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "descr", nullable = false, columnDefinition = "TEXT")  // Changed: desc → descr
     private String description;
 
     @NotNull
-    @Column(name = "scheduled_date", nullable = false)
+    @Column(name = "sched_dt", nullable = false)
     private LocalDateTime scheduledDate;
 
-    @Column(name = "completed_date")
+    @Column(name = "comp_dt")
     private LocalDateTime completedDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "sts")
     private MaintenanceStatus status = MaintenanceStatus.SCHEDULED;
 
-    @DecimalMin(value = "0.0")
     @Column(name = "cost")
     private BigDecimal cost = BigDecimal.ZERO;
 
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     public enum MaintenanceType {
         PREVENTIVE, CORRECTIVE, EMERGENCY, INSPECTION

@@ -1,5 +1,7 @@
 package com.sotsamban.guesthouse.domain.staff;
 
+import com.sotsamban.guesthouse.components.TimestampConverter;
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.expense.Expense;
 import com.sotsamban.guesthouse.domain.housekeeping.Housekeeping;
 import com.sotsamban.guesthouse.domain.reservation.Reservation;
@@ -14,7 +16,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,11 +25,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Staff {
+public class Staff extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "staff_id")
-    private Integer staffId;
+    private Long staffId;
 
     @NotBlank
     @Size(max = 50)
@@ -55,29 +56,8 @@ public class Staff {
     @Column(name = "position", nullable = false)
     private String position;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "department", nullable = false)
-    private Department department;
-
-    @DecimalMin(value = "0.0")
-    @Column(name = "base_price", nullable = false)
-    private BigDecimal basePrice = BigDecimal.ZERO;
-
-    @NotNull
-    @Column(name = "hire_date", nullable = false)
-    private LocalDate hireDate;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private StaffStatus status = StaffStatus.ACTIVE;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Column(name = "salary")
+    private BigDecimal salary;
 
     @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY)
     private List<Reservation> reservations;
@@ -91,12 +71,5 @@ public class Staff {
     @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY)
     private List<Expense> expenses;
 
-    public enum Department {
-        FRONT_DESK, HOUSEKEEPING, MAINTENANCE, MANAGEMENT, SECURITY, FOOD_SERVICE
-    }
-
-    public enum StaffStatus {
-        ACTIVE, INACTIVE, TERMINATED
-    }
 }
 

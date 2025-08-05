@@ -1,5 +1,6 @@
 package com.sotsamban.guesthouse.domain.housekeeping;
 
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.room.Room;
 import com.sotsamban.guesthouse.domain.staff.Staff;
 import jakarta.persistence.*;
@@ -19,10 +20,10 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Housekeeping {
+public class Housekeeping extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "housekeeping_id")
+    @Column(name = "hk_id")
     private Integer housekeepingId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,15 +34,15 @@ public class Housekeeping {
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
-    @Column(name = "cleaning_date")
+    @Column(name = "clean_dt")
     private LocalDateTime cleaningDate = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "cleaning_type", nullable = false)
+    @Column(name = "clean_type", nullable = false)
     private CleaningType cleaningType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "sts")
     private HousekeepingStatus status = HousekeepingStatus.PENDING;
 
     @Column(name = "notes", columnDefinition = "TEXT")
@@ -49,16 +50,8 @@ public class Housekeeping {
 
     @Min(1)
     @Max(10)
-    @Column(name = "inspection_score")
+    @Column(name = "insp_score")
     private Integer inspectionScore;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     public enum CleaningType {
         CHECKOUT_CLEANING, MAINTENANCE_CLEANING, DEEP_CLEANING, INSPECTION

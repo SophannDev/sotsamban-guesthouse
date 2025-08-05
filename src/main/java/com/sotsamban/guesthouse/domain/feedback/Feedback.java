@@ -1,5 +1,6 @@
 package com.sotsamban.guesthouse.domain.feedback;
 
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.booking.Booking;
 import com.sotsamban.guesthouse.domain.guest.Guest;
 import jakarta.persistence.*;
@@ -19,10 +20,10 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Feedback {
+public class Feedback extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "feedback_id")
+    @Column(name = "fdb_id")
     private Integer feedbackId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,46 +31,38 @@ public class Feedback {
     private Guest guest;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booking_id", nullable = false)
+    @JoinColumn(name = "bkg_id", nullable = false)
     private Booking booking;
 
     @Min(1)
     @Max(5)
-    @Column(name = "overall_rating", nullable = false)
+    @Column(name = "ovr_rate", nullable = false)
     private Integer overallRating;
 
     @Min(1)
     @Max(5)
-    @Column(name = "room_rating")
+    @Column(name = "room_rate")
     private Integer roomRating;
 
     @Min(1)
     @Max(5)
-    @Column(name = "service_rating")
+    @Column(name = "svc_rate")
     private Integer serviceRating;
 
     @Min(1)
     @Max(5)
-    @Column(name = "cleanliness_rating")
+    @Column(name = "clean_rate")
     private Integer cleanlinessRating;
 
-    @Column(name = "comments", columnDefinition = "TEXT")
+    @Column(name = "comm", columnDefinition = "TEXT")
     private String comments;
 
-    @Column(name = "feedback_date")
+    @Column(name = "fdb_dt")
     private LocalDateTime feedbackDate = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "sts")
     private FeedbackStatus status = FeedbackStatus.PENDING;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     public enum FeedbackStatus {
         PENDING, REVIEWED, RESPONDED

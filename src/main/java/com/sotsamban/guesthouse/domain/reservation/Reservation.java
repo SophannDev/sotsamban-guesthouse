@@ -1,11 +1,13 @@
 package com.sotsamban.guesthouse.domain.reservation;
 
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.booking.Booking;
 import com.sotsamban.guesthouse.domain.groupcompany.GuestCompanion;
 import com.sotsamban.guesthouse.domain.guest.Guest;
 import com.sotsamban.guesthouse.domain.payment.Payment;
 import com.sotsamban.guesthouse.domain.room.Room;
 import com.sotsamban.guesthouse.domain.staff.Staff;
+import com.sotsamban.guesthouse.enums.ReservationStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -26,11 +28,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reservation {
+public class Reservation extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reservation_id")
-    private Integer reservationId;
+    @Column(name = "rsv_id")
+    private Long reservationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest_id", nullable = false)
@@ -41,42 +44,33 @@ public class Reservation {
     private Room room;
 
     @NotNull
-    @Column(name = "check_in_date", nullable = false)
+    @Column(name = "chk_in", nullable = false)
     private LocalDateTime checkInDate;
 
     @NotNull
-    @Column(name = "check_out_date", nullable = false)
+    @Column(name = "chk_out", nullable = false)
     private LocalDateTime checkOutDate;
 
     @Min(1)
-    @Column(name = "number_of_guests", nullable = false)
+    @Column(name = "num_guest", nullable = false)
     private Integer numberOfGuests = 1;
 
-    @DecimalMin(value = "0.0")
-    @Column(name = "salary")
-    private BigDecimal salary = BigDecimal.ZERO;
+    @Column(name = "amt")
+    private BigDecimal totalAmount = BigDecimal.ZERO;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Convert(converter = ReservationStatus.Converter.class)
+    @Column(name = "sts")
     private ReservationStatus status = ReservationStatus.PENDING;
 
-    @Column(name = "special_requests", columnDefinition = "TEXT")
+    @Column(name = "spec_req", columnDefinition = "TEXT")
     private String specialRequests;
 
-    @Column(name = "reservation_date")
+    @Column(name = "rsv_dt")
     private LocalDateTime reservationDate = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id")
     private Staff staff;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Booking booking;
@@ -87,7 +81,4 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Payment> payments;
 
-    public enum ReservationStatus {
-        PENDING, CONFIRMED, CHECKED_IN, CHECKED_OUT, CANCELLED, NO_SHOW
-    }
 }

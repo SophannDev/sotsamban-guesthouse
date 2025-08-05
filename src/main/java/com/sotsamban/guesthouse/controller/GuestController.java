@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/api/v1/guests")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "*")
 public class GuestController extends BaseRestController {
 
     private final GuestService guestService;

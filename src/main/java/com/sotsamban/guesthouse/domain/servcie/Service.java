@@ -1,5 +1,6 @@
 package com.sotsamban.guesthouse.domain.servcie;
 
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.guestservice.GuestService;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -22,38 +23,29 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Service {
+public class Service extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "service_id")
+    @Column(name = "svc_id")
     private Integer serviceId;
 
     @NotBlank
     @Size(max = 100)
-    @Column(name = "service_name", nullable = false)
+    @Column(name = "svc_nm", nullable = false)
     private String serviceName;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "descr", nullable = false, columnDefinition = "TEXT")  // Changed: desc → descr
     private String description;
 
-    @DecimalMin(value = "0.0")
-    @Column(name = "price", nullable = false)
+    @Column(name = "prc", nullable = false)
     private BigDecimal price = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false)
+    @Column(name = "cat", nullable = false)
     private ServiceCategory category;
 
-    @Column(name = "is_active")
+    @Column(name = "is_act")
     private Boolean isActive = true;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
     private List<GuestService> guestServices;

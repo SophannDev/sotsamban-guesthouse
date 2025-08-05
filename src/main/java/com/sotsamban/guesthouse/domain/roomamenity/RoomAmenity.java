@@ -1,5 +1,6 @@
 package com.sotsamban.guesthouse.domain.roomamenity;
 
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.roomamenitymapping.RoomAmenityMapping;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -8,10 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,30 +17,22 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoomAmenity {
+public class RoomAmenity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "amenity_id")
+    @Column(name = "amt_id")
     private Integer amenityId;
 
     @NotBlank
     @Size(max = 100)
-    @Column(name = "amenity_name", nullable = false, unique = true)
+    @Column(name = "amt_nm", nullable = false, unique = true)
     private String amenityName;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "descr", nullable = false, columnDefinition = "TEXT")  // Changed: desc → descr
     private String description;
 
-    @Column(name = "is_active")
+    @Column(name = "is_act")
     private Boolean isActive = true;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "amenity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RoomAmenityMapping> roomMappings;

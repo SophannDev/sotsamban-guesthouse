@@ -26,27 +26,26 @@ import java.util.List;
 public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "inventory_id")
+    @Column(name = "inv_id")
     private Integer inventoryId;
 
     @NotBlank
     @Size(max = 100)
-    @Column(name = "item_name", nullable = false)
+    @Column(name = "item_nm", nullable = false)
     private String itemName;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false)
+    @Column(name = "cat", nullable = false)
     private InventoryCategory category;
 
     @Min(0)
-    @Column(name = "quantity_available", nullable = false)
+    @Column(name = "qty_avail", nullable = false)
     private Integer quantityAvailable = 0;
 
     @Min(0)
-    @Column(name = "minimum_threshold")
+    @Column(name = "min_thr")
     private Integer minimumThreshold = 0;
 
-    @DecimalMin(value = "0.0")
     @Column(name = "unit_cost")
     private BigDecimal unitCost = BigDecimal.ZERO;
 
@@ -54,16 +53,8 @@ public class Inventory {
     @Column(name = "supplier")
     private String supplier;
 
-    @Column(name = "last_restocked")
+    @Column(name = "last_stock")
     private LocalDateTime lastRestocked;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "inventory", fetch = FetchType.LAZY)
     private List<RoomInventory> roomInventories;

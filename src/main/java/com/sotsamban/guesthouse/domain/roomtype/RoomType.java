@@ -1,5 +1,6 @@
 package com.sotsamban.guesthouse.domain.roomtype;
 
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.room.Room;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -24,42 +25,33 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoomType {
+public class RoomType extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "room_type_id")
-    private Integer roomTypeId;
+    @Column(name = "rt_id")
+    private Long roomTypeId;
 
     @NotBlank
     @Size(max = 50)
-    @Column(name = "type_name", nullable = false, unique = true)
+    @Column(name = "type_nm", nullable = false, unique = true)
     private String typeName;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "descr", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @DecimalMin(value = "0.0")
-    @Column(name = "base_rate", nullable = false)
+    @Column(name = "base_rt", nullable = false)
     private BigDecimal baseRate = BigDecimal.ZERO;
 
     @Min(1)
-    @Column(name = "standard_occupancy", nullable = false)
+    @Column(name = "std_occ", nullable = false)
     private Integer standardOccupancy = 1;
 
     @Min(1)
-    @Column(name = "max_occupancy", nullable = false)
+    @Column(name = "max_occ", nullable = false)
     private Integer maxOccupancy = 1;
 
-    @Column(name = "amenities", columnDefinition = "TEXT")
+    @Column(name = "amts", columnDefinition = "TEXT")
     private String amenities;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Room> rooms;

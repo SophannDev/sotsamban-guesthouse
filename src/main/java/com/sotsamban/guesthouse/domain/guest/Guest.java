@@ -1,5 +1,6 @@
 package com.sotsamban.guesthouse.domain.guest;
 
+import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.feedback.Feedback;
 import com.sotsamban.guesthouse.domain.reservation.Reservation;
 import jakarta.persistence.*;
@@ -23,7 +24,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Guest {
+public class Guest extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "guest_id")
@@ -31,12 +32,12 @@ public class Guest {
 
     @NotBlank
     @Size(max = 50)
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "fname", nullable = false)
     private String firstName;
 
     @NotBlank
     @Size(max = 50)
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "lname", nullable = false)
     private String lastName;
 
     @Email
@@ -49,7 +50,7 @@ public class Guest {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "address", columnDefinition = "TEXT")
+    @Column(name = "addr", columnDefinition = "TEXT")
     private String address;
 
     @Size(max = 50)
@@ -64,24 +65,16 @@ public class Guest {
     @Column(name = "country")
     private String country;
 
-    @Column(name = "date_of_birth")
+    @Column(name = "dob")
     private LocalDate dateOfBirth;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "id_document_type")
+    @Column(name = "id_doc_type")
     private IdDocumentType idDocumentType;
 
     @Size(max = 50)
-    @Column(name = "id_document_number")
+    @Column(name = "id_doc_num")
     private String idDocumentNumber;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reservation> reservations;

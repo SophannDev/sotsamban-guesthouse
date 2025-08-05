@@ -47,8 +47,6 @@ public class GuestMapper {
         response.setDateOfBirth(guest.getDateOfBirth());
         response.setIdDocumentType(guest.getIdDocumentType() != null ? guest.getIdDocumentType().name() : null);
         response.setIdDocumentNumber(guest.getIdDocumentNumber());
-        response.setCreatedAt(guest.getCreatedAt());
-        response.setUpdatedAt(guest.getUpdatedAt());
 
         return response;
     }
