@@ -9,4 +9,6 @@ public interface RoomService {
 
     Object getAllRooms(String searchValue, Pageable pages);
 
+    Object getRoomById(Long roomId);
+
 }

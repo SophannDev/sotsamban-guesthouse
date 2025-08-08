@@ -1,5 +1,5 @@
-# Guest House Management System - Clean Configuration
-# PostgreSQL Database & Logging Only
+# Guest House Management System - Complete Configuration
+# PostgreSQL Database, Logging & Image Upload
 
 server:
   port: 8080
@@ -25,3 +25,32 @@ spring:
       hibernate:
         format_sql: true
 
+  # Static Resource Handling for Images
+  web:
+    resources:
+      static-locations:
+        - file:uploads/
+        - classpath:/static/
+      add-mappings: true
+
+  # File Upload Configuration
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+      enabled: true
+
+# Application-Specific Configuration
+app:
+  upload:
+    dir: uploads/
+  base:
+    url: http://localhost:8080
+
+# Logging Configuration (Optional)
+logging:
+  level:
+    com.sotsamban.guesthouse: INFO
+    org.springframework.web.multipart: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

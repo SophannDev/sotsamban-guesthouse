@@ -30,11 +30,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         RoomType roomType = new RoomType();
         roomType.setTypeName(payload.getTypeName().getValue());
         roomType.setDescription(payload.getDescription());
-        roomType.setBaseRate(payload.getBaseRate().negate());
-        roomType.setMaxOccupancy(payload.getMaxOccupancy());
-        roomType.setStandardOccupancy(payload.getStandardOccupancy());
-        roomType.setMaxOccupancy(payload.getMaxOccupancy());
-        roomType.setAmenities(payload.getAmenities() != null ? payload.getAmenities() : "");
+        roomType.setBasePrice(payload.getBasePrice());
 
         roomTypeRepository.save(roomType);
 

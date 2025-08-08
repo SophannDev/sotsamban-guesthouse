@@ -1,8 +1,8 @@
 package com.sotsamban.guesthouse.domain.guest;
 
+import com.sotsamban.guesthouse.config.ImageConfig;
 import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.feedback.Feedback;
-import com.sotsamban.guesthouse.domain.reservation.Reservation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,11 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,24 +47,6 @@ public class Guest extends BaseEntity {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "addr", columnDefinition = "TEXT")
-    private String address;
-
-    @Size(max = 50)
-    @Column(name = "city")
-    private String city;
-
-    @Size(max = 50)
-    @Column(name = "state")
-    private String state;
-
-    @Size(max = 50)
-    @Column(name = "country")
-    private String country;
-
-    @Column(name = "dob")
-    private LocalDate dateOfBirth;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "id_doc_type")
     private IdDocumentType idDocumentType;
@@ -77,10 +56,11 @@ public class Guest extends BaseEntity {
     private String idDocumentNumber;
 
     @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Reservation> reservations;
-
-    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Feedback> feedbacks;
+
+    @Convert(converter = ImageConfig.StringListConverter.class)
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    private List<String> images = new ArrayList<>();
 
     public enum IdDocumentType {
         PASSPORT, DRIVING_LICENSE, NATIONAL_ID, OTHER

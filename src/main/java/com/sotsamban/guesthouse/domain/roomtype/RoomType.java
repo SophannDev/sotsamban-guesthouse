@@ -1,5 +1,6 @@
 package com.sotsamban.guesthouse.domain.roomtype;
 
+import com.sotsamban.guesthouse.config.ImageConfig;
 import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.room.Room;
 import jakarta.persistence.*;
@@ -17,6 +18,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,20 +41,10 @@ public class RoomType extends BaseEntity {
     @Column(name = "descr", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "base_rt", nullable = false)
-    private BigDecimal baseRate = BigDecimal.ZERO;
+    @Column(name = "base_price", nullable = false)
+    private BigDecimal basePrice;
 
-    @Min(1)
-    @Column(name = "std_occ", nullable = false)
-    private Integer standardOccupancy = 1;
-
-    @Min(1)
-    @Column(name = "max_occ", nullable = false)
-    private Integer maxOccupancy = 1;
-
-    @Column(name = "amts", columnDefinition = "TEXT")
-    private String amenities;
-
-    @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Room> rooms;
+    @Convert(converter = ImageConfig.StringListConverter.class)
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    private List<String> images = new ArrayList<>();
 }

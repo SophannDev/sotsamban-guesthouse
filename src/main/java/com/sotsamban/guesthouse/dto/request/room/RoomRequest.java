@@ -24,9 +24,6 @@ public class RoomRequest {
 
     private RoomStatus status;
 
-    private BigDecimal basePrice;
+    private BigDecimal pricePerNight;
 
-    private Integer maxOccupancy;
-
-    private String description;
 }

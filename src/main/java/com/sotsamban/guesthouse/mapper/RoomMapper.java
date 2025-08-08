@@ -17,24 +17,9 @@ public class RoomMapper {
         Room room = new Room();
         room.setRoomNumber(request.getRoomNumber());
         room.setStatus(request.getStatus() != null ? request.getStatus() : RoomStatus.AVAILABLE);
-        room.setBasePrice(request.getBasePrice());
-        room.setMaxOccupancy(request.getMaxOccupancy());
-        room.setDescription(request.getDescription());
+        room.setPricePerNight(request.getPricePerNight());
         return room;
     }
 
-    public RoomResponse toResponse(Room room) {
-        if (room == null) {
-            return null;
-        }
-
-        return RoomResponse.builder()
-                .roomNumber(room.getRoomNumber())
-                .roomTypeName(room.getRoomType() != null ? room.getRoomType().getTypeName() : null)
-                .status(room.getStatus())
-                .basePrice(room.getBasePrice())
-                .maxOccupancy(room.getMaxOccupancy())
-                .build();
-    }
 
 }

@@ -18,12 +18,6 @@ public class RoomTypeRequest {
 
     private String description;
 
-    private BigDecimal baseRate;
-
-    private Integer standardOccupancy;
-
-    private Integer maxOccupancy;
-
-    private String amenities;
+    private BigDecimal basePrice;
 
 }

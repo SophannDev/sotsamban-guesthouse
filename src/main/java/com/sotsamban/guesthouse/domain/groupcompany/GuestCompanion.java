@@ -1,7 +1,6 @@
 package com.sotsamban.guesthouse.domain.groupcompany;
 
 import com.sotsamban.guesthouse.domain.BaseEntity;
-import com.sotsamban.guesthouse.domain.reservation.Reservation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -10,8 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import java.time.LocalDateTime;
 @Entity
 @Table(name = "tb_guest_companion")
 @Getter
@@ -23,10 +20,6 @@ public class GuestCompanion extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comp_id")
     private Integer companionId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rsv_id", nullable = false)
-    private Reservation reservation;
 
     @NotBlank
     @Size(max = 50)

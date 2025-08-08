@@ -16,11 +16,11 @@ public class GuestMapper {
         guest.setLastName(request.getLastName());
         guest.setEmail(request.getEmail());
         guest.setPhone(request.getPhone());
-        guest.setAddress(request.getAddress());
-        guest.setCity(request.getCity());
-        guest.setState(request.getState());
-        guest.setCountry(request.getCountry());
-        guest.setDateOfBirth(request.getDateOfBirth());
+//        guest.setAddress(request.getAddress());
+//        guest.setCity(request.getCity());
+//        guest.setState(request.getState());
+//        guest.setCountry(request.getCountry());
+//        guest.setDateOfBirth(request.getDateOfBirth());
 
         if (request.getIdDocumentType() != null) {
             guest.setIdDocumentType(Guest.IdDocumentType.valueOf(request.getIdDocumentType().toUpperCase()));
@@ -40,11 +40,6 @@ public class GuestMapper {
         response.setLastName(guest.getLastName());
         response.setEmail(guest.getEmail());
         response.setPhone(guest.getPhone());
-        response.setAddress(guest.getAddress());
-        response.setCity(guest.getCity());
-        response.setState(guest.getState());
-        response.setCountry(guest.getCountry());
-        response.setDateOfBirth(guest.getDateOfBirth());
         response.setIdDocumentType(guest.getIdDocumentType() != null ? guest.getIdDocumentType().name() : null);
         response.setIdDocumentNumber(guest.getIdDocumentNumber());
 

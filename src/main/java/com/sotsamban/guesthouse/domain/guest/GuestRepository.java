@@ -12,8 +12,8 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
         WHERE (?1 IS NULL OR tbg.created_at >= ?1)
         AND (?2 IS NULL OR tbg.created_at <= ?2)
         AND (?3 IS NULL OR 
-             tbg.first_name ILIKE CONCAT('%', ?3, '%') OR 
-             tbg.last_name ILIKE CONCAT('%', ?3, '%'))
+             tbg.fname ILIKE CONCAT('%', ?3, '%') OR 
+             tbg.lname ILIKE CONCAT('%', ?3, '%'))
     """, nativeQuery = true)
     Page<Guest> findAllByStartDateBetweenAndEndDateBetween(String startDate, String endDate, String searchValue, Pageable pageable);
 

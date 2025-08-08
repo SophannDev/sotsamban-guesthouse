@@ -1,22 +1,16 @@
 package com.sotsamban.guesthouse.domain.staff;
 
-import com.sotsamban.guesthouse.components.TimestampConverter;
 import com.sotsamban.guesthouse.domain.BaseEntity;
 import com.sotsamban.guesthouse.domain.expense.Expense;
-import com.sotsamban.guesthouse.domain.housekeeping.Housekeeping;
-import com.sotsamban.guesthouse.domain.reservation.Reservation;
-import com.sotsamban.guesthouse.domain.roommaintence.RoomMaintenance;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -60,16 +54,12 @@ public class Staff extends BaseEntity {
     private BigDecimal salary;
 
     @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY)
-    private List<Reservation> reservations;
-
-    @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY)
-    private List<RoomMaintenance> maintenances;
-
-    @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY)
-    private List<Housekeeping> housekeepings;
-
-    @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY)
     private List<Expense> expenses;
+
+    @ElementCollection
+    @CollectionTable(name = "staff_images", joinColumns = @JoinColumn(name = "staff_id"))
+    @Column(name = "image_url")
+    private List<String> images = new ArrayList<>();
 
 }
 

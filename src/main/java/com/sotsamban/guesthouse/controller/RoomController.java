@@ -42,4 +42,10 @@ public class RoomController extends BaseRestController {
         return ok(guestsResponse);
     }
 
+    @GetMapping("/{roomId}")
+    public Object getRoomById(@PathVariable Long roomId) {
+        var roomResponse = roomService.getRoomById(roomId);
+        return ok(roomResponse);
+    }
+
 }

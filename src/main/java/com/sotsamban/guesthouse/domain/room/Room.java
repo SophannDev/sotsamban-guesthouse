@@ -1,11 +1,7 @@
 package com.sotsamban.guesthouse.domain.room;
 
+import com.sotsamban.guesthouse.config.ImageConfig;
 import com.sotsamban.guesthouse.domain.BaseEntity;
-import com.sotsamban.guesthouse.domain.housekeeping.Housekeeping;
-import com.sotsamban.guesthouse.domain.reservation.Reservation;
-import com.sotsamban.guesthouse.domain.roomamenitymapping.RoomAmenityMapping;
-import com.sotsamban.guesthouse.domain.roominventory.RoomInventory;
-import com.sotsamban.guesthouse.domain.roommaintence.RoomMaintenance;
 import com.sotsamban.guesthouse.domain.roomtype.RoomType;
 import com.sotsamban.guesthouse.enums.RoomStatus;
 import jakarta.persistence.*;
@@ -18,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -45,30 +42,11 @@ public class Room extends BaseEntity {
     @Column(name = "sts")
     private RoomStatus status = RoomStatus.AVAILABLE;
 
-    @Column(name = "base_prc", nullable = false)
-    private BigDecimal basePrice = BigDecimal.ZERO;
+    @Column(name = "prce_per_ngt")
+    private BigDecimal pricePerNight;
 
-    @Min(1)
-    @Column(name = "max_occ", nullable = false)
-    private Integer maxOccupancy = 1;
-
-
-    @Column(name = "descr", nullable = false, columnDefinition = "TEXT")  // Changed: desc → descr
-    private String description;
-
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Reservation> reservations;
-
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<RoomMaintenance> maintenances;
-
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Housekeeping> housekeepings;
-
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<RoomAmenityMapping> amenityMappings;
-
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<RoomInventory> roomInventories;
+    @Convert(converter = ImageConfig.StringListConverter.class)
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    private List<String> images = new ArrayList<>();
 
 }

@@ -17,18 +17,20 @@ public class RoomResponse {
 
     private String roomNumber;
     private String roomTypeName;
-    private RoomStatus status;
+    private String status;
+    private BigDecimal pricePerNight;
     private BigDecimal basePrice;
-    private Integer maxOccupancy;
+    private String image;
+
 
     @Builder
-    public RoomResponse(String roomNumber, String roomTypeName,
-                        RoomStatus status, BigDecimal basePrice, Integer maxOccupancy) {
+    public RoomResponse(String roomNumber, String roomTypeName, String status, BigDecimal pricePerNight, BigDecimal basePrice, String image) {
         this.roomNumber = roomNumber;
         this.roomTypeName = roomTypeName;
         this.status = status;
+        this.pricePerNight = pricePerNight;
         this.basePrice = basePrice;
-        this.maxOccupancy = maxOccupancy;
+        this.image = image;
     }
 
 }

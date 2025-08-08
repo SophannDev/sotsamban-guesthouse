@@ -1,18 +1,20 @@
 package com.sotsamban.guesthouse.service.impl;
 
+import com.sotsamban.guesthouse.common.StatusCode;
+import com.sotsamban.guesthouse.domain.room.Room;
 import com.sotsamban.guesthouse.domain.room.RoomRepository;
 import com.sotsamban.guesthouse.domain.roomtype.RoomType;
 import com.sotsamban.guesthouse.domain.roomtype.RoomTypeRepository;
 import com.sotsamban.guesthouse.dto.request.room.RoomRequest;
 import com.sotsamban.guesthouse.dto.response.room.RoomMainResponse;
 import com.sotsamban.guesthouse.dto.response.room.RoomResponse;
-import com.sotsamban.guesthouse.dto.response.roomtype.RoomTypeMainResponse;
+import com.sotsamban.guesthouse.enums.RoomStatus;
+import com.sotsamban.guesthouse.exception.BusinessException;
 import com.sotsamban.guesthouse.mapper.RoomMapper;
 import com.sotsamban.guesthouse.service.RoomService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +38,10 @@ public class RoomServiceImpl implements RoomService {
         RoomType roomType = roomTypeRepository.findById(roomRequest.getRoomTypeId())
                 .orElseThrow(() -> new IllegalArgumentException("Room type not found with ID: " + roomRequest.getRoomTypeId()));
 
-
-        var room = roomMapper.toEntity(roomRequest);
-
+        Room room = new Room();
+        room.setRoomNumber(roomRequest.getRoomNumber());
+        room.setStatus(roomRequest.getStatus() != null ? roomRequest.getStatus() : RoomStatus.AVAILABLE);
+        room.setPricePerNight(roomRequest.getPricePerNight());
         room.setRoomType(roomType);
 
         roomRepository.save(room);
@@ -54,9 +57,10 @@ public class RoomServiceImpl implements RoomService {
                 .map(r -> RoomResponse.builder()
                         .roomNumber(r.getRoomNumber())
                         .roomTypeName(r.getRoomTypeName())
-                        .status(r.getStatus())
+                        .pricePerNight(r.getPricePerNight())
                         .basePrice(r.getBasePrice())
-                        .maxOccupancy(r.getMaxOccupancy())
+                        .status(r.getStatus())
+                        .image(r.getImageUrl())
                         .build())
                 .toList();
 
@@ -64,5 +68,21 @@ public class RoomServiceImpl implements RoomService {
                 .rooms(roomsResponse)
                 .page(roomList)
                 .build();
+    }
+
+    @Override
+    public Object getRoomById(Long roomId) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new BusinessException(StatusCode.NOT_FOUND));
+
+        RoomResponse roomResponse = RoomResponse.builder()
+                .roomNumber(room.getRoomNumber())
+                .roomTypeName(room.getRoomType().getTypeName())
+                .pricePerNight(room.getPricePerNight())
+                .basePrice(room.getRoomType().getBasePrice())
+                .status(room.getStatus().getLabel())
+                .build();
+        return roomResponse;
+
     }
 }

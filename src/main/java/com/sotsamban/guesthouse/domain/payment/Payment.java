@@ -1,16 +1,12 @@
 package com.sotsamban.guesthouse.domain.payment;
 
 import com.sotsamban.guesthouse.domain.BaseEntity;
-import com.sotsamban.guesthouse.domain.reservation.Reservation;
+import com.sotsamban.guesthouse.domain.booking.Booking;
+import com.sotsamban.guesthouse.enums.PaymentMethodStatus;
+import com.sotsamban.guesthouse.enums.PaymentStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,45 +14,45 @@ import java.time.LocalDateTime;
 @Table(name = "tb_payment")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class Payment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pay_id")
-    private Integer paymentId;
+    private Long paymentId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rsv_id", nullable = false)
-    private Reservation reservation;
+    @Column(name = "amt_paid", nullable = false)
+    private BigDecimal amountPaid;
 
-    @DecimalMin(value = "0.01")
-    @Column(name = "amt", nullable = false)
-    private BigDecimal amount;
-
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = PaymentMethodStatus.Converter.class)
     @Column(name = "pay_mthd", nullable = false)
-    private PaymentMethod paymentMethod;
+    private PaymentMethodStatus paymentMethod;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = PaymentStatus.Converter.class)
     @Column(name = "pay_sts")
     private PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
     @Column(name = "pay_dt")
     private LocalDateTime paymentDate = LocalDateTime.now();
 
-    @Size(max = 100)
-    @Column(name = "txn_id")
-    private String transactionId;
-
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
-    public enum PaymentMethod {
-        CASH, CREDIT_CARD, DEBIT_CARD, BANK_TRANSFER, DIGITAL_WALLET, CHECK
+    @OneToOne
+    @JoinColumn(name = "bkg_id")
+    private Booking booking;
+
+    @Builder
+    public Payment(Long paymentId, BigDecimal amountPaid, PaymentMethodStatus paymentMethod,
+                   PaymentStatus paymentStatus, LocalDateTime paymentDate, String notes, Booking booking) {
+        this.paymentId = paymentId;
+        this.amountPaid = amountPaid;
+        this.paymentMethod = paymentMethod;
+        this.paymentStatus = paymentStatus;
+        this.paymentDate = paymentDate;
+        this.notes = notes;
+        this.booking = booking;
     }
 
-    public enum PaymentStatus {
-        PENDING, COMPLETED, FAILED, REFUNDED
-    }
 }
