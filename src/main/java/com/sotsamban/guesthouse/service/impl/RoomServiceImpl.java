@@ -54,14 +54,17 @@ public class RoomServiceImpl implements RoomService {
         var roomList = roomRepository.findAllRooms(pages);
 
         var roomsResponse = roomList.stream()
-                .map(r -> RoomResponse.builder()
+                .map(r -> {
+
+                        return RoomResponse.builder()
                         .roomNumber(r.getRoomNumber())
                         .roomTypeName(r.getRoomTypeName())
                         .pricePerNight(r.getPricePerNight())
                         .basePrice(r.getBasePrice())
                         .status(r.getStatus())
                         .image(r.getImageUrl())
-                        .build())
+                        .build();
+                })
                 .toList();
 
         return RoomMainResponse.builder()
