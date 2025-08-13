@@ -1,0 +1,12 @@
+# Gradle files
+.gradle/
+gradle/
+build/
+
+# IDE files
+.idea/
+
+# Temporary build files
+build/tmp/
+
+
