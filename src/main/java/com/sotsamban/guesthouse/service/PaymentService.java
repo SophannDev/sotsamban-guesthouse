@@ -1,12 +1,13 @@
 package com.sotsamban.guesthouse.service;
 
+import com.sotsamban.guesthouse.domain.payment.Payment;
 import com.sotsamban.guesthouse.dto.request.payment.PaymentRequest;
 import org.springframework.data.domain.Pageable;
 
 public interface PaymentService {
 
-    void createPayment(PaymentRequest request);
+    Payment createPayment(PaymentRequest request);
 
-    Object getAllPayments(String searchValue, Pageable pageable);
+    Object getAllPayments(String payMethod, String payStatus, String searchValue, Pageable pageable);
 
 }

@@ -30,9 +30,7 @@ public class GuestServiceImpl implements GuestService {
     @Override
     public void createGuest(GuestRequest guestRequest) {
         var guest = guestMapper.toEntity(guestRequest);
-
         guestRepository.save(guest);
-
     }
 
     @Override

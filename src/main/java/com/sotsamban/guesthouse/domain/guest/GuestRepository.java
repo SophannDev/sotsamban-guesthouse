@@ -17,5 +17,9 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
     """, nativeQuery = true)
     Page<Guest> findAllByStartDateBetweenAndEndDateBetween(String startDate, String endDate, String searchValue, Pageable pageable);
 
+    boolean existsByPhone(String phone);
+
+    boolean existsByEmail(String email);
+
 
 }

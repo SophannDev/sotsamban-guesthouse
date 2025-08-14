@@ -1,5 +1,6 @@
 package com.sotsamban.guesthouse.service.impl;
 
+import com.sotsamban.guesthouse.common.StatusCode;
 import com.sotsamban.guesthouse.domain.booking.Booking;
 import com.sotsamban.guesthouse.domain.booking.BookingRepository;
 import com.sotsamban.guesthouse.domain.room.RoomRepository;
@@ -8,6 +9,8 @@ import com.sotsamban.guesthouse.dto.response.booking.BookingMainResponse;
 import com.sotsamban.guesthouse.dto.response.booking.BookingResponse;
 import com.sotsamban.guesthouse.dto.response.booking.IBooking;
 import com.sotsamban.guesthouse.enums.BookingStatus;
+import com.sotsamban.guesthouse.enums.RoomStatus;
+import com.sotsamban.guesthouse.exception.BusinessException;
 import com.sotsamban.guesthouse.service.BookingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,14 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public void createBooking(BookingRequest request) {
 
+        // find room by id
+        var roomId = roomRepository.findById(request.getRoomIds())
+                .orElseThrow(() -> new RuntimeException("Room not found with ID: " + request.getRoomIds()));
+
+        if (roomId.getStatus() != RoomStatus.AVAILABLE) {
+            throw new BusinessException(StatusCode.ROOM_NOT_AVAILABLE);
+        }
+
         var booking = Booking.builder()
                 .actualCheckIn(request.getActualCheckIn())
                 .actualCheckOut(request.getActualCheckOut())
@@ -52,8 +63,6 @@ public class BookingServiceImpl implements BookingService {
 
         var bookingResponses = findAllBookings.stream()
                 .map(booking -> {
-
-//                    var roomName = roomRepository.findRoomByRoomId(booking.getRoomId());
 
                     return BookingResponse.builder()
                             .bookingId(booking.getBookingId())

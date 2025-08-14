@@ -28,7 +28,9 @@ public class PaymentController extends BaseRestController {
      }
         @GetMapping
         public Object getAllPayments(
-                @RequestParam(required = false) String searchValue,
+                @RequestParam(value = "start_date", required = false) String startDate,
+                @RequestParam(value = "end_date", required = false) String endDate,
+                @RequestParam(value = "search_value" , required = false) String searchValue,
                 @RequestParam(defaultValue = "0") int pageNumber,
                 @RequestParam(defaultValue = "10") int pageSize) {
 
@@ -37,7 +39,7 @@ public class PaymentController extends BaseRestController {
             ).build();
             Pageable pages = PageRequest.of(pageNumber, pageSize,Sort.by(sortBuilder));
 
-            var paymentsResponse = paymentService.getAllPayments(searchValue, pages);
+            var paymentsResponse = paymentService.getAllPayments(startDate, endDate, searchValue, pages);
             return ok(paymentsResponse);
         }
 }

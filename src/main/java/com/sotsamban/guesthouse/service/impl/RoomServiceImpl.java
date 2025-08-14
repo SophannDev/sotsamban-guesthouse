@@ -56,13 +56,47 @@ public class RoomServiceImpl implements RoomService {
         var roomsResponse = roomList.stream()
                 .map(r -> {
 
+                    var findRoom = roomTypeRepository.findById(r.getRoomTypeId())
+                            .orElseThrow(() -> new BusinessException(StatusCode.NOT_FOUND));
+
+                    var roomType = "";
+                    var roomStatus = "";
+
+                    if (findRoom.getTypeName().equals("1")) {
+                        roomType = "Single Room";
+                    } else if (findRoom.getTypeName().equals("2")) {
+                        roomType = "Double Room";
+                    } else {
+                        roomType = "Unknown Type";
+                    }
+
+                    if (r.getStatus().equals("1")) {
+                        roomStatus = "Available";
+                    } else if (r.getStatus().equals("2")) {
+                        roomStatus = "Occupied";
+                    } else if (r.getStatus().equals("3")) {
+                        roomStatus = "Under Maintenance";
+                    } else if (r.getStatus().equals("4")) {
+                        roomStatus = "Being Cleaned";
+                    } else if (r.getStatus().equals("0")) {
+                        roomStatus = "Out of Order";
+                    } else {
+                        roomStatus = "Unknown Status";
+                    }
+
                         return RoomResponse.builder()
                         .roomNumber(r.getRoomNumber())
+                        .roomType(roomType)
                         .roomTypeName(r.getRoomTypeName())
                         .pricePerNight(r.getPricePerNight())
                         .basePrice(r.getBasePrice())
                         .status(r.getStatus())
+                        .roomStatusName(roomStatus)
                         .image(r.getImageUrl())
+                        .guestFirstName(r.getGuestFirstName())
+                        .guestLastName(r.getGuestLastName())
+                        .actualCheckIn(r.getCheckInDate())
+                        .actualCheckOut(r.getCheckOutDate())
                         .build();
                 })
                 .toList();

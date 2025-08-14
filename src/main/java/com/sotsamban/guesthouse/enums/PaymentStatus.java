@@ -9,7 +9,7 @@ import com.sotsamban.guesthouse.components.AbstractEnumConverter;
  */
 public enum PaymentStatus implements GenericEnum<PaymentStatus, String> {
     PENDING("1"),
-    COMPLETED("2"),
+    PAID("2"),
     FAILED("3"),
     REFUNDED("4")
     ;
@@ -54,7 +54,7 @@ public enum PaymentStatus implements GenericEnum<PaymentStatus, String> {
     public String getLabel() {
         String label = "(no label)";
         if("1".equals(value)) label = "Pending";
-        else if("2".equals(value)) label = "Completed";
+        else if("2".equals(value)) label = "Paid";
         else if("3".equals(value)) label = "Failed";
         else if("4".equals(value)) label = "Refunded";
 

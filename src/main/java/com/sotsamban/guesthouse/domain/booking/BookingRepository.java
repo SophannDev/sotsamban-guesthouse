@@ -2,6 +2,7 @@ package com.sotsamban.guesthouse.domain.booking;
 
 import com.sotsamban.guesthouse.dto.response.booking.BookingResponse;
 import com.sotsamban.guesthouse.dto.response.booking.IBooking;
+import com.sotsamban.guesthouse.enums.BookingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

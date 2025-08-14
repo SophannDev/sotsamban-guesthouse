@@ -33,19 +33,19 @@ public class Payment extends BaseEntity {
     @Column(name = "pay_sts")
     private PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
-    @Column(name = "pay_dt")
-    private LocalDateTime paymentDate = LocalDateTime.now();
+    @Column(name = "pay_dt", length = 14) // Stores yyyyMMddHHmmss (14 characters)
+    private String paymentDate;
 
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY) // Add fetch type for better performance
     @JoinColumn(name = "bkg_id")
     private Booking booking;
 
     @Builder
     public Payment(Long paymentId, BigDecimal amountPaid, PaymentMethodStatus paymentMethod,
-                   PaymentStatus paymentStatus, LocalDateTime paymentDate, String notes, Booking booking) {
+                   PaymentStatus paymentStatus, String paymentDate, String notes, Booking booking) {
         this.paymentId = paymentId;
         this.amountPaid = amountPaid;
         this.paymentMethod = paymentMethod;

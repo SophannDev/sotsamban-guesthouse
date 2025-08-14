@@ -25,9 +25,16 @@ public abstract class AbstractEnumConverter<E extends Enum<E> & GenericEnum<E, T
             return null;
         }
 
-        for (E enumValue : enumClass.getEnumConstants()) {
-            if (enumValue.getValue().equals(dbData)) {
-                return enumValue;
+        // Use reflection to call the fromValue method
+        try {
+            java.lang.reflect.Method fromValueMethod = enumClass.getMethod("fromValue", Object.class);
+            return (E) fromValueMethod.invoke(null, dbData);
+        } catch (Exception e) {
+            // Fallback to manual search
+            for (E enumValue : enumClass.getEnumConstants()) {
+                if (enumValue.getValue().equals(dbData)) {
+                    return enumValue;
+                }
             }
         }
 

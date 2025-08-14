@@ -30,5 +30,17 @@ public interface IRoomResponse {
     @Value("#{target.image_url}")
     String getImageUrl();
 
+    @Value("#{target.guest_first_name}")
+    String getGuestFirstName();
+
+    @Value("#{target.guest_last_name}")
+    String getGuestLastName();
+
+    @Value("#{target.check_in_date}")
+    String getCheckInDate();
+
+    @Value("#{target.check_out_date}")
+    String getCheckOutDate();
+
 
 }

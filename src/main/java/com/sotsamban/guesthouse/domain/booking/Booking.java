@@ -38,8 +38,10 @@ public class Booking extends BaseEntity {
     @Column(name = "image")
     private String image;
 
+    @Column(name = "guest_id") // Add column mapping
     private Long guestId;
 
+    @Column(name = "room_id") // Add column mapping
     private Long roomId;
 
     @Builder
