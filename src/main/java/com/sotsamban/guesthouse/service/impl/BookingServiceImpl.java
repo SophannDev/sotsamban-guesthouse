@@ -45,7 +45,7 @@ public class BookingServiceImpl implements BookingService {
         var booking = Booking.builder()
                 .actualCheckIn(request.getActualCheckIn())
                 .actualCheckOut(request.getActualCheckOut())
-                .bookingStatus(request.getBookingStatus() != null ? request.getBookingStatus() : BookingStatus.ACTIVE)
+                .bookingStatus(request.getBookingStatus() != null ? request.getBookingStatus() : BookingStatus.CONFIRMED)
                 .totalAmount(request.getTotalAmount())
                 .notes(request.getNotes())
                 .roomId(request.getRoomIds())
@@ -57,21 +57,47 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Object getBookings(String startDate, String endDate, String searchValue, Pageable pageable) {
+    public Object getBookings(String bookingType, String searchValue, Pageable pageable) {
 
-        Page<IBooking> findAllBookings = bookingRepository.findAllBookings(startDate, endDate, searchValue, pageable);
+        Page<IBooking> findAllBookings = bookingRepository.findAllBookings(bookingType, searchValue, pageable);
 
         var bookingResponses = findAllBookings.stream()
                 .map(booking -> {
+
+                    var roomId = roomRepository.findById(booking.getRoomId())
+                            .orElseThrow(() -> new BusinessException(StatusCode.NOT_FOUND, "Room not found with ID: " + booking.getRoomId()));
+
+                    var bookintStatus = "";
+                    var roomTypeName = "";
+
+                    if (booking.getSts().equals("0")) {
+                        bookintStatus = BookingStatus.CANCELLED.name();
+                    } else if (booking.getSts().equals("1")) {
+                        bookintStatus = BookingStatus.CONFIRMED.name();
+                    } else if (booking.getSts().equals("2")) {
+                        bookintStatus = BookingStatus.COMPLETED.name();
+                    } else {
+                        throw new BusinessException(StatusCode.NOT_FOUND, "Invalid booking status: " + booking.getSts());
+                    }
+
+                    if (roomId.getRoomType().getTypeName().equals("1")) {
+                        roomTypeName = "Single bed";
+                    } else if (roomId.getRoomType().getTypeName().equals("2")) {
+                        roomTypeName = "Double bed";
+                    } else {
+                        roomTypeName = "Default bed";
+                    }
 
                     return BookingResponse.builder()
                             .bookingId(booking.getBookingId())
                             .roomId(booking.getRoomId())
                             .roomNumber(booking.getRoomNumber())
+                            .roomTypeName(roomTypeName)
                             .guestId(booking.getGuestId())
                             .actualCheckIn(booking.getCheckIn())
                             .actualCheckOut(booking.getCheckOut())
                             .bookingStatus(booking.getSts())
+                            .bookingStatusName(bookintStatus)
                             .totalAmount(booking.getPricePerNight())
                             .notes(booking.getNoted())
                             .firstName(booking.getFirstName())

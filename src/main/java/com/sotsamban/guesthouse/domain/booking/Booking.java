@@ -27,7 +27,7 @@ public class Booking extends BaseEntity {
 
     @Convert(converter = BookingStatus.Converter.class)
     @Column(name = "bkg_sts")
-    private BookingStatus bookingStatus = BookingStatus.ACTIVE;
+    private BookingStatus bookingStatus;
 
     @Column(name = "tot_amt")
     private BigDecimal totalAmount;

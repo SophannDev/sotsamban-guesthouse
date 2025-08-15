@@ -24,10 +24,20 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
            tr.sts           AS room_type_sts,
            tr.room_num      AS room_number,
            tbg.fname        AS first_name,
-           tbg.lname        AS last_name
+           tbg.lname        AS last_name,
+           rt.type_nm       AS room_type_name
         from tb_booking tbbk
              join tb_room tr on tbbk.room_id = tr.room_id
              join tb_guest tbg on tbbk.guest_id = tbg.guest_id
+        join tb_room_type rt on tr.room_type_id = rt.rt_id
+        where rt.type_nm = ?1
+        and (?2 is null or (
+            LOWER(tbg.fname) LIKE LOWER(CONCAT('%', ?2, '%')) OR
+            LOWER(tbg.lname) LIKE LOWER(CONCAT('%', ?2, '%')) OR
+            LOWER(CONCAT(tbg.fname, ' ', tbg.lname)) LIKE LOWER(CONCAT('%', ?2, '%')) OR
+            LOWER(tr.room_num) LIKE LOWER(CONCAT('%', ?2, '%')) OR
+            LOWER(tbbk.notes) LIKE LOWER(CONCAT('%', ?2, '%'))
+            ))
     """, nativeQuery = true)
-    Page<IBooking> findAllBookings(String startDate, String endDate, String searchValue, Pageable pageable);
+    Page<IBooking> findAllBookings(String bookingType, String searchValue, Pageable pageable);
 }

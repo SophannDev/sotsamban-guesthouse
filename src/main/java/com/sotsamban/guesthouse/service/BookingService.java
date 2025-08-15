@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface BookingService {
     void createBooking(BookingRequest request);
 
-    Object getBookings(String startDate, String endDate, String searchValue, Pageable pageable);
+    Object getBookings(String bookingType, String searchValue, Pageable pageable);
 }

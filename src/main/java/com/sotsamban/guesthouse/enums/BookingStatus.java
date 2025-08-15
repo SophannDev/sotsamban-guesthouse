@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.sotsamban.guesthouse.components.AbstractEnumConverter;
 
 public enum BookingStatus implements GenericEnum<BookingStatus, String> {
-    ACTIVE("1"),
+    CONFIRMED("1"),
     COMPLETED("2"),
     CANCELLED("0"),
     ;
@@ -35,7 +35,7 @@ public enum BookingStatus implements GenericEnum<BookingStatus, String> {
     public String getLabel() {
         String label = "(no label)";
 
-        if("1".equals(value)) label = "Active";
+        if("1".equals(value)) label = "Confirmed";
         else if("2".equals(value)) label = "Completed";
         else if("0".equals(value)) label = "Cancelled";
 

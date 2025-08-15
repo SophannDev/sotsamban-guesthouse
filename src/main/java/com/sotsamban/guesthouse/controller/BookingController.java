@@ -29,13 +29,12 @@ public class BookingController extends BaseRestController {
          return ok();
      }
 
-     @GetMapping
+     @GetMapping("/{type_nm}")
         public Object getBookings(
-             @RequestParam(value = "start_date", required = false) String startDate,
-             @RequestParam(value = "end_date", required = false) String endDate,
              @RequestParam(value = "page_number", defaultValue = "0") int pageNumber,
              @RequestParam(value = "page_size", defaultValue = "10") int pageSize,
-                @RequestParam(value = "search_value", required = false) String searchValue
+             @RequestParam(value = "search_value", required = false) String searchValue,
+             @PathVariable(value = "type_nm") String bookingType
 
      ) {
 
@@ -44,7 +43,7 @@ public class BookingController extends BaseRestController {
          ).build();
          Pageable pages = PageRequest.of(pageNumber, pageSize,Sort.by(sortBuilder));
 
-         var bookingResp = bookingService.getBookings(startDate, endDate, searchValue, pages);
+         var bookingResp = bookingService.getBookings(bookingType, searchValue, pages);
 
             return ok(bookingResp);
         }

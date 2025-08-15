@@ -17,7 +17,7 @@ public class BookingRequest {
 
     private String actualCheckOut;
 
-    private BookingStatus bookingStatus = BookingStatus.ACTIVE;
+    private BookingStatus bookingStatus;
 
     private BigDecimal totalAmount;
 
